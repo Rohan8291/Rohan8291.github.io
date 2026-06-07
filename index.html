@@ -113,7 +113,7 @@ section{padding:120px 60px;}
 .proj{background:var(--bg);border:1px solid var(--border);position:relative;overflow:hidden;transition:border-color .3s;cursor:none;}
 .proj:hover{border-color:rgba(255,110,0,.35);}
 .proj-cover{width:100%;aspect-ratio:16/9;background:var(--surface2);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
-.proj-cover img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
+.proj-cover img{width:100%;height:100%;object-fit:contain;transition:transform .6s;}
 .proj:hover .proj-cover img{transform:scale(1.04);}
 .proj-cover video{width:100%;height:100%;object-fit:cover;}
 .cph{display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted);font-size:9px;letter-spacing:.18em;text-transform:uppercase;}
@@ -128,7 +128,7 @@ section{padding:120px 60px;}
 .parr{position:absolute;bottom:20px;right:20px;width:28px;height:28px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;transition:border-color .3s,color .3s,transform .3s;}
 .proj:hover .parr{border-color:var(--accent);color:var(--accent);transform:rotate(-45deg);}
 .proj.feat{grid-column:1/-1;}
-.proj.feat .proj-cover{aspect-ratio:21/9;}
+.proj.feat .proj-cover{aspect-ratio:16/9;}
 
 /* EXPERIENCE */
 #experience{background:var(--bg);}
@@ -191,6 +191,20 @@ footer a{color:var(--accent);text-decoration:none;}
   .sh{flex-direction:column;align-items:flex-start;gap:8px;}
   footer{flex-direction:column;gap:10px;text-align:center;}
 }
+
+/* VIDEO MODAL */
+.vid-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:2000;display:none;align-items:center;justify-content:center;}
+.vid-overlay.open{display:flex;}
+.vid-box{width:90%;max-width:1000px;aspect-ratio:16/9;position:relative;}
+.vid-box iframe{width:100%;height:100%;border:none;}
+.vid-close{position:absolute;top:-40px;right:0;color:var(--white);font-size:24px;cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:.1em;background:none;border:none;}
+.vid-close:hover{color:var(--accent);}
+
+/* PLAY OVERLAY ON PROJECT CARD */
+.play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0);transition:background .3s;cursor:pointer;}
+.play-overlay:hover{background:rgba(0,0,0,0.4);}
+.play-circle{width:60px;height:60px;border:2px solid var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:20px;opacity:0;transition:opacity .3s;padding-left:4px;}
+.play-overlay:hover .play-circle{opacity:1;}
 </style>
 </head>
 <body>
@@ -216,7 +230,7 @@ footer a{color:var(--accent);text-decoration:none;}
     <div class="hero-tag">Mumbai, India · Open to Projects</div>
     <h1 class="hero-name">ROHAN<br/><span class="it">Dhumal</span></h1>
     <p class="hero-role">Senior Motion Designer</p>
-    <p class="hero-bio">Crafting branded motion stories through AI-powered video, After Effects, and commercial production. From concept to final frame — for brands that want to move.</p>
+    <p class="hero-bio">Adding life to every pixel is all I love. Motion design is my passion — I edit videos, design sound, and create 3D animations. I enjoy surfing through every process of making interesting motion videos for more than 6 years and constantly challenge myself to learn more.</p>
     <div class="hero-actions">
       <a href="#projects" class="btn-p">See My Work →</a>
       <a href="https://www.behance.net/rohandhumal1" target="_blank" class="btn-g">Behance ↗</a>
@@ -225,7 +239,7 @@ footer a{color:var(--accent);text-decoration:none;}
   <div class="hero-right">
     <!-- ADD YOUR PHOTO: remove the comment tags and add your image URL -->
     <div class="photo-frame">
-      <img src="https://drive.google.com/uc?export=view&id=1_bm850_FbVIhbbO0Z2RG50e1Z6N64iTt" alt="Rohan Dhumal"/>
+      <img src="my photo 1.jpg" alt="Rohan Dhumal"/>
       <div class="frame-label">Rohan Dhumal · Mumbai</div>
     </div>
     <div class="stats-row">
@@ -250,7 +264,7 @@ footer a{color:var(--accent);text-decoration:none;}
     <div>
       <div class="about-text rv">
         <p>I'm a <strong>Senior Motion Designer at Foxymoron</strong>, one of India's leading digital agencies. With 6+ years of experience, I bridge traditional post-production with cutting-edge AI video generation.</p>
-        <p>My work spans branded commercial content for some of India's biggest consumer brands — including <strong>Puma, Pond's, Mentos, Onitsuka Tiger, TVS, Converse India,</strong> and luxury labels like IRTH.</p>
+        <p>My work spans branded commercial content for some of India's biggest consumer brands — including <strong>Puma, Pond's, Mentos, Onitsuka Tiger, TVS, Converse India, PhonePe, Sandisk, Snitch,</strong> and luxury labels like IRTH.</p>
         <p>I specialise in translating brand language into precise motion — whether that's a <strong>360° sneaker reveal, a liquid product morph, or a full AI-generated campaign</strong> built frame by frame.</p>
         <p>→ <a href="https://www.behance.net/rohandhumal1" target="_blank">View full work on Behance ↗</a></p>
       </div>
@@ -286,76 +300,105 @@ footer a{color:var(--accent);text-decoration:none;}
   <div class="pgrid">
 
     <div class="proj feat rv">
-      <div class="proj-cover">
-        <!--<img src="YOUR_IRTH_IMAGE" alt="IRTH"/>-->
-        <div class="cph"><img src="irth.jpg" alt="IRTH"/>
+      <div class="proj-cover" style="position:relative;">
+        <img data-vimeo="1199144512" src="" alt="Converse"/>
+        <div class="play-overlay" onclick="openVideo('https://player.vimeo.com/video/1199144512?autoplay=1')">
+          <div class="play-circle">▶</div>
+        </div>
       </div>
       <div class="proj-body">
-        <div class="pcat">Luxury Retail · Featured</div>
-        <div class="ptitle">IRTH Handbag Campaign</div>
-        <p class="pdesc">Sketch-to-reality store reveal animation, Mumbai coastal billboard drone sequence, and Instagram carousel swipe mechanics — built entirely through AI video compositing.</p>
-        <div class="ptags"><span class="ptag">Kling</span><span class="ptag">After Effects</span><span class="ptag">Higgsfield</span><span class="ptag">AI Compositing</span></div>
+        <div class="pcat">Footwear · Featured</div>
+        <div class="ptitle">Converse India</div>
+        <p class="pdesc">A cinematic motion campaign for Converse India — blending street culture, bold typography, and dynamic animation to bring the iconic brand to life for the Indian market.</p>
+        <div class="ptags"><span class="ptag">After Effects</span><span class="ptag">Motion Design</span><span class="ptag">Premiere Pro</span></div>
       </div>
-      <div class="parr">→</div>
+      <div class="parr">▶</div>
     </div>
 
     <div class="proj rv">
-      <div class="proj-cover"><img src="mentos.jpg" alt="Mentos"/></div>
+      <div class="proj-cover" style="position:relative;">
+        <img data-vimeo="1199149923" src="" alt="Mentos"/>
+        <div class="play-overlay" onclick="openVideo('https://player.vimeo.com/video/1199149923?autoplay=1')">
+          <div class="play-circle">▶</div>
+        </div>
+      </div>
       <div class="proj-body">
         <div class="pcat">FMCG · Confectionery</div>
         <div class="ptitle">Mentos Pure Fresh</div>
         <p class="pdesc">Condensation product VFX and animated airplane cabin scene capturing the freshness burst concept for the brand campaign.</p>
         <div class="ptags"><span class="ptag">Hailuo</span><span class="ptag">Premiere Pro</span><span class="ptag">VFX</span></div>
       </div>
-      <div class="parr">→</div>
+      <div class="parr">▶</div>
     </div>
 
     <div class="proj rv">
-      <div class="proj-cover"><img src="sandisk.jpg.jpg" alt="Sandisk"/></div>
+      <div class="proj-cover" style="position:relative;">
+        <img data-vimeo="1199149933" src="" alt="Sandisk"/>
+        <div class="play-overlay" onclick="openVideo('https://player.vimeo.com/video/1199149933?autoplay=1')">
+          <div class="play-circle">▶</div>
+        </div>
+      </div>
       <div class="proj-body">
         <div class="pcat">Tech · Storage ⭐ 93.7M Views</div>
         <div class="ptitle">Sandisk Extreme Fit™</div>
         <p class="pdesc">Introducing the SanDisk® Extreme Fit™ USB-C® Flash Drive — up to 1TB capacity, USB 3.2 Gen 1 speeds up to 400MB/s in a compact plug-and-stay design. Most watched — 93.7 Million views.</p>
         <div class="ptags"><span class="ptag">Kling</span><span class="ptag">After Effects</span><span class="ptag">Product VFX</span></div>
       </div>
-      <div class="parr">→</div>
+      <div class="parr">▶</div>
     </div>
 
     <div class="proj rv">
-      <div class="proj-cover"><img src="Cred 1.jpg" alt="CRED"/></div>
+      <div class="proj-cover" style="position:relative;">
+        <img data-vimeo="1199149948" src="" alt="CRED"/>
+        <div class="play-overlay" onclick="openVideo('https://player.vimeo.com/video/1199149948?autoplay=1')">
+          <div class="play-circle">▶</div>
+        </div>
+      </div>
       <div class="proj-body">
         <div class="pcat">Fintech · App</div>
         <div class="ptitle">CRED — Secure by Design</div>
         <p class="pdesc">Premium product visualisation for CRED — showcasing Google HCE Guard DexGuard security with a cinematic phone-on-pedestal reveal and teal atmospheric lighting.</p>
         <div class="ptags"><span class="ptag">After Effects</span><span class="ptag">3D Compositing</span><span class="ptag">Product VFX</span></div>
       </div>
-      <div class="parr">→</div>
+      <div class="parr">▶</div>
     </div>
 
     <div class="proj rv">
-      <div class="proj-cover"><img src="tvs.jpg" alt="TVS"/></div>
+      <div class="proj-cover" style="position:relative;">
+        <img data-vimeo="1199149962" src="" alt="TVS"/>
+        <div class="play-overlay" onclick="openVideo('https://player.vimeo.com/video/1199149962?autoplay=1')">
+          <div class="play-circle">▶</div>
+        </div>
+      </div>
       <div class="proj-body">
         <div class="pcat">Automotive</div>
         <div class="ptitle">TVS iQube Scooter</div>
         <p class="pdesc">Cinematic day-to-night transition ad — racetrack golden hour scenes and spotlight sequences for the electric scooter launch.</p>
         <div class="ptags"><span class="ptag">Higgsfield</span><span class="ptag">After Effects</span><span class="ptag">Sky FX</span></div>
       </div>
-      <div class="parr">→</div>
+      <div class="parr">▶</div>
     </div>
 
     <div class="proj rv">
-      <div class="proj-cover"><img src="ponds.jpg" alt="Ponds"/></div>
+      <div class="proj-cover" style="position:relative;">
+        <img data-vimeo="1199149859" src="" alt="Ponds"/>
+        <div class="play-overlay" onclick="openVideo('https://player.vimeo.com/video/1199149859?autoplay=1')">
+          <div class="play-circle">▶</div>
+        </div>
+      </div>
       <div class="proj-body">
         <div class="pcat">Beauty · Skincare</div>
         <div class="ptitle">Pond's Hydra Miracle</div>
         <p class="pdesc">Morphing jar animation with dynamic liquid transformation effects — showcasing the product's hydration technology through fluid motion design.</p>
         <div class="ptags"><span class="ptag">Kling</span><span class="ptag">After Effects</span><span class="ptag">Product VFX</span></div>
       </div>
-      <div class="parr">→</div>
+      <div class="parr">▶</div>
     </div>
 
     <div class="proj rv">
-      <div class="proj-cover"><img src="Cred 2.png" alt="CRED 2"/></div>
+      <div class="proj-cover" style="position:relative;">
+        <img src="Cred 2.png" alt="CRED 2"/>
+      </div>
       <div class="proj-body">
         <div class="pcat">Fintech · Space Edition</div>
         <div class="ptitle">CRED — Design to Secure</div>
@@ -366,25 +409,51 @@ footer a{color:var(--accent);text-decoration:none;}
     </div>
 
     <div class="proj rv">
-      <div class="proj-cover"><img src="Bajaj.jpg" alt="Bajaj"/></div>
+      <div class="proj-cover" style="position:relative;">
+        <img data-vimeo="1199149857" src="" alt="Bajaj"/>
+        <div class="play-overlay" onclick="openVideo('https://player.vimeo.com/video/1199149857?autoplay=1')">
+          <div class="play-circle">▶</div>
+        </div>
+      </div>
       <div class="proj-body">
         <div class="pcat">Consumer Electronics</div>
         <div class="ptitle">Bajaj — Glides Like a Race Machine</div>
         <p class="pdesc">Motion design for Bajaj's Non-Stick Soleplate iron — cinematic lighting and bold typography. Pure manual After Effects craftsmanship, no AI.</p>
         <div class="ptags"><span class="ptag">After Effects</span><span class="ptag">Motion Design</span><span class="ptag">Manual</span></div>
       </div>
-      <div class="parr">→</div>
+      <div class="parr">▶</div>
     </div>
 
     <div class="proj rv">
-      <div class="proj-cover"><img src="Irth 2 .jpg" alt="IRTH 2"/></div>
+      <div class="proj-cover" style="position:relative;">
+        <img data-vimeo="1199149860" src="" alt="IRTH 2"/>
+        <div class="play-overlay" onclick="openVideo('https://player.vimeo.com/video/1199149860?autoplay=1')">
+          <div class="play-circle">▶</div>
+        </div>
+      </div>
       <div class="proj-body">
         <div class="pcat">Luxury Retail · Campaign 2</div>
         <div class="ptitle">IRTH — Chapter Two</div>
         <p class="pdesc">Second campaign for IRTH — continuation of the luxury handbag brand story with new motion concepts and AI-powered visual storytelling.</p>
         <div class="ptags"><span class="ptag">Kling</span><span class="ptag">After Effects</span><span class="ptag">AI Video</span></div>
       </div>
-      <div class="parr">→</div>
+      <div class="parr">▶</div>
+    </div>
+
+    <div class="proj rv">
+      <div class="proj-cover" style="position:relative;">
+        <img data-vimeo="1199149858" src="" alt="Nexas"/>
+        <div class="play-overlay" onclick="openVideo('https://player.vimeo.com/video/1199149858?autoplay=1')">
+          <div class="play-circle">▶</div>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="pcat">Brand · Campaign</div>
+        <div class="ptitle">Nexas</div>
+        <p class="pdesc">A bold brand campaign built on cinematic motion — dynamic transitions, striking visuals, and precise motion design craftsmanship that commands attention.</p>
+        <div class="ptags"><span class="ptag">After Effects</span><span class="ptag">Motion Design</span><span class="ptag">AI Video</span></div>
+      </div>
+      <div class="parr">▶</div>
     </div>
 
   </div>
@@ -395,18 +464,23 @@ footer a{color:var(--accent);text-decoration:none;}
   <div class="sh rv"><div><div class="st">Work History</div><h2 class="stitle">Experience</h2></div><div class="snum">03</div></div>
   <div class="exp-list">
     <div class="exp-item rv">
-      <div class="exp-date">2022 — Present</div>
-      <div><div class="exp-role">Senior Motion Designer</div><div class="exp-co">Foxymoron · Mumbai</div><p class="exp-desc">Leading AI video production and motion graphics for major Indian consumer brands. Specialising in Kling, Higgsfield, Runway, and After Effects for commercial campaigns across FMCG, luxury, automotive, and sportswear.</p></div>
+      <div class="exp-date">Jan 2026 — Present</div>
+      <div><div class="exp-role">Senior Motion Graphic Designer</div><div class="exp-co">Foxymoron · Full-time</div><p class="exp-desc">Leading AI video production and motion graphics for major Indian consumer brands. Specialising in Kling, Higgsfield, Runway, and After Effects for commercial campaigns across FMCG, luxury, automotive, and sportswear.</p></div>
       <div class="exp-dot"></div>
     </div>
     <div class="exp-item rv">
-      <div class="exp-date">2020 — 2022</div>
-      <div><div class="exp-role">Motion Designer</div><div class="exp-co">Freelance · Mumbai</div><p class="exp-desc">Independent motion design work including branded content for Converse India, social media campaigns, and short-form video production for digital-first brands.</p></div>
+      <div class="exp-date">Oct 2023 — Dec 2025 · 2 yrs 3 mos</div>
+      <div><div class="exp-role">Motion Graphic Designer</div><div class="exp-co">Verve Media · Full-time · On-site</div><p class="exp-desc">Created motion graphics and animated content for a diverse range of clients. Delivered high-quality visual storytelling across brand campaigns, social media, and digital platforms.</p></div>
       <div class="exp-dot"></div>
     </div>
     <div class="exp-item rv">
-      <div class="exp-date">2018 — 2020</div>
-      <div><div class="exp-role">Junior Motion Designer</div><div class="exp-co">Agency · Mumbai</div><p class="exp-desc">Started career building motion graphics, explainer videos, and social content. Developed core After Effects and Premiere Pro skills across diverse client projects.</p></div>
+      <div class="exp-date">Apr 2023 — Oct 2023 · 7 mos</div>
+      <div><div class="exp-role">Motion Graphic Designer</div><div class="exp-co">StarStruck by Sunny Leone · Full-time · On-site</div><p class="exp-desc">Designed and produced motion graphics for a celebrity-led brand — developing animated content for campaigns, product launches, and social media across beauty and lifestyle verticals.</p></div>
+      <div class="exp-dot"></div>
+    </div>
+    <div class="exp-item rv">
+      <div class="exp-date">Mar 2022 — Mar 2023 · 1 yr 1 mo</div>
+      <div><div class="exp-role">Junior Motion Graphic Designer</div><div class="exp-co">Verve Media · Full-time · On-site</div><p class="exp-desc">Started my career here as a motion graphic designer, creating animations for videos and building core skills in After Effects, Premiere Pro, and motion design across diverse client projects.</p></div>
       <div class="exp-dot"></div>
     </div>
   </div>
@@ -472,483 +546,46 @@ document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 const sObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.skbar').forEach(b=>b.classList.add('go'));sObs.unobserve(e.target);}});},{threshold:.3});
 document.querySelectorAll('.skills-wrap').forEach(el=>sObs.observe(el));
 function handleForm(){const n=document.querySelector('input[type=text]').value;if(n.trim()){alert('Thanks '+n+'! I\'ll be in touch soon.');}else{alert('Please enter your name.');}}
+
+function openVideo(url){
+  document.getElementById('vidFrame').src = url;
+  document.getElementById('vidOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeVideo(e){
+  if(!e || e.target===document.getElementById('vidOverlay') || e.currentTarget.classList.contains('vid-close')){
+    document.getElementById('vidFrame').src='';
+    document.getElementById('vidOverlay').classList.remove('open');
+    document.body.style.overflow='';
+  }
+}
 </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Rohan Dhumal — Senior Motion Designer</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --bg:#080808;--surface:#0f0f0f;--surface2:#141414;--border:#1f1f1f;
-  --accent:#ff6e00;--accent-dim:rgba(255,110,0,0.1);--text:#c8c4bc;
-  --muted:#484440;--white:#f0ebe3;
-}
-html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-weight:300;font-size:12px;line-height:1.8;overflow-x:hidden;cursor:none;}
-body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9000;opacity:0.4;}
-.cur{width:6px;height:6px;background:var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
-.cur-ring{width:32px;height:32px;border:1px solid rgba(255,110,0,0.5);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .2s,height .2s,border-color .2s;}
-nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:28px 60px;transition:background .4s,border-color .4s;border-bottom:1px solid transparent;}
-nav.up{background:rgba(8,8,8,0.92);backdrop-filter:blur(20px);border-color:var(--border);}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.2em;color:var(--white);text-decoration:none;}
-.logo span{color:var(--accent);}
-.nav-links{display:flex;gap:40px;list-style:none;}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:10px;letter-spacing:.2em;text-transform:uppercase;transition:color .2s;position:relative;}
-.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s;}
-.nav-links a:hover{color:var(--accent);}
-.nav-links a:hover::after{width:100%;}
-.nav-cta{font-size:10px;letter-spacing:.15em;text-transform:uppercase;border:1px solid var(--accent);color:var(--accent);padding:10px 22px;text-decoration:none;transition:background .2s,color .2s;}
-.nav-cta:hover{background:var(--accent);color:#000;}
 
-/* HERO */
-.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding:0 60px;padding-top:100px;align-items:center;gap:60px;position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(255,110,0,0.07) 0%,transparent 70%);right:-80px;top:50%;transform:translateY(-50%);pointer-events:none;animation:pulse 4s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:.5;transform:translateY(-50%) scale(1);}50%{opacity:1;transform:translateY(-50%) scale(1.1);}}
-.hero-tag{display:inline-flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:28px;}
-.hero-tag::before{content:'';width:28px;height:1px;background:var(--accent);}
-.hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(64px,7vw,108px);line-height:.9;letter-spacing:.03em;color:var(--white);margin-bottom:12px;}
-.hero-name .it{font-family:'Playfair Display',serif;font-style:italic;color:var(--accent);font-size:clamp(56px,6vw,96px);}
-.hero-role{font-family:'Playfair Display',serif;font-size:clamp(16px,1.8vw,26px);font-style:italic;color:var(--muted);margin-bottom:28px;}
-.hero-bio{font-size:12px;color:var(--muted);max-width:380px;line-height:2;margin-bottom:40px;}
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
-.btn-p{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#000;padding:14px 30px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;transition:opacity .2s;}
-.btn-p:hover{opacity:.85;}
-.btn-g{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--border);color:var(--muted);padding:14px 30px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;transition:border-color .2s,color .2s;}
-.btn-g:hover{border-color:var(--accent);color:var(--accent);}
-
-/* PHOTO FRAME */
-.hero-right{display:flex;flex-direction:column;gap:14px;}
-.photo-frame{width:100%;aspect-ratio:3/4;max-height:500px;background:var(--surface);border:1px solid var(--border);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-.photo-frame img{width:100%;height:100%;object-fit:cover;display:block;}
-.ph-placeholder{display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--muted);font-size:10px;letter-spacing:.2em;text-transform:uppercase;}
-.ph-placeholder svg{width:40px;height:40px;opacity:.2;}
-.frame-label{position:absolute;bottom:14px;left:14px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);background:rgba(8,8,8,.85);padding:6px 12px;}
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
-.stat{background:var(--surface);border:1px solid var(--border);padding:20px;position:relative;overflow:hidden;transition:border-color .3s;}
-.stat:hover{border-color:rgba(255,110,0,.3);}
-.stat::before{content:'';position:absolute;top:0;left:0;width:2px;height:0;background:var(--accent);transition:height .4s;}
-.stat:hover::before{height:100%;}
-.stat-n{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--white);line-height:1;}
-.stat-n span{color:var(--accent);font-size:24px;}
-.stat-l{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:4px;}
-
-/* MARQUEE */
-.mq-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:14px 0;overflow:hidden;background:var(--surface);}
-.mq-track{display:flex;gap:48px;white-space:nowrap;animation:mq 22s linear infinite;}
-.mq-track span{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.25em;color:var(--muted);}
-.mq-track span.ac{color:var(--accent);}
-@keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-
-/* SECTIONS */
-section{padding:120px 60px;}
-.sh{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:28px;border-bottom:1px solid var(--border);margin-bottom:72px;}
-.st{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
-.stitle{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(30px,3.5vw,50px);color:var(--white);}
-.snum{font-family:'Bebas Neue',sans-serif;font-size:72px;color:var(--border);line-height:1;}
-
-/* ABOUT */
-#about{background:var(--surface);}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
-.about-text p{color:var(--text);line-height:2.1;margin-bottom:18px;font-size:12.5px;}
-.about-text strong{color:var(--white);font-weight:400;}
-.about-text a{color:var(--accent);text-decoration:none;}
-.about-photo{width:100%;aspect-ratio:4/5;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.about-photo img{width:100%;height:100%;object-fit:cover;}
-.aph{display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted);font-size:9px;letter-spacing:.2em;text-transform:uppercase;}
-.aph svg{width:32px;height:32px;opacity:.2;}
-.skills-wrap{margin-top:36px;}
-.skrow{display:flex;align-items:center;gap:16px;margin-bottom:14px;}
-.skname{width:150px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);flex-shrink:0;}
-.skbar{flex:1;height:1px;background:var(--border);position:relative;}
-.skfill{height:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 1.4s cubic-bezier(.77,0,.18,1);}
-.skbar.go .skfill{transform:scaleX(1);}
-.skval{font-size:10px;color:var(--muted);width:28px;text-align:right;}
-
-/* REEL */
-#reel{background:var(--bg);padding:80px 60px;}
-.reel-tag{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:12px;}
-.reel-tag::before{content:'';width:28px;height:1px;background:var(--accent);}
-.reel-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,5vw,80px);color:var(--white);letter-spacing:.04em;margin-bottom:36px;line-height:1;}
-.reel-title em{color:var(--accent);font-family:'Playfair Display',serif;font-style:italic;}
-.video-zone{width:100%;aspect-ratio:16/9;background:var(--surface);border:1px solid var(--border);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-.video-zone iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
-.vzph{display:flex;flex-direction:column;align-items:center;gap:14px;color:var(--muted);text-align:center;}
-.vzph svg{width:44px;height:44px;opacity:.2;}
-.vzph p{font-size:10px;letter-spacing:.18em;text-transform:uppercase;max-width:260px;line-height:1.9;}
-.play-btn{width:64px;height:64px;border:1px solid rgba(255,110,0,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:22px;animation:rp 2s ease-in-out infinite;}
-@keyframes rp{0%,100%{box-shadow:0 0 0 0 rgba(255,110,0,.3);}50%{box-shadow:0 0 0 14px rgba(255,110,0,0);}}
-
-/* PROJECTS */
-#projects{background:var(--surface);}
-.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;}
-.proj{background:var(--bg);border:1px solid var(--border);position:relative;overflow:hidden;transition:border-color .3s;cursor:none;}
-.proj:hover{border-color:rgba(255,110,0,.35);}
-.proj-cover{width:100%;aspect-ratio:16/9;background:var(--surface2);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
-.proj-cover img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
-.proj:hover .proj-cover img{transform:scale(1.04);}
-.proj-cover video{width:100%;height:100%;object-fit:cover;}
-.cph{display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted);font-size:9px;letter-spacing:.18em;text-transform:uppercase;}
-.cph svg{width:28px;height:28px;opacity:.2;}
-.proj-body{padding:28px 28px 40px;}
-.pcat{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-.pcat::before{content:'▪';font-size:7px;}
-.ptitle{font-family:'Playfair Display',serif;font-style:italic;font-size:22px;color:var(--white);margin-bottom:10px;line-height:1.2;}
-.pdesc{font-size:11.5px;color:var(--muted);line-height:1.9;margin-bottom:18px;}
-.ptags{display:flex;flex-wrap:wrap;gap:6px;}
-.ptag{font-size:9px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--border);color:var(--muted);padding:4px 10px;}
-.parr{position:absolute;bottom:20px;right:20px;width:28px;height:28px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;transition:border-color .3s,color .3s,transform .3s;}
-.proj:hover .parr{border-color:var(--accent);color:var(--accent);transform:rotate(-45deg);}
-.proj.feat{grid-column:1/-1;}
-.proj.feat .proj-cover{aspect-ratio:21/9;}
-
-/* EXPERIENCE */
-#experience{background:var(--bg);}
-.exp-list{display:flex;flex-direction:column;gap:2px;}
-.exp-item{background:var(--surface);border:1px solid var(--border);padding:32px 36px;display:grid;grid-template-columns:180px 1fr 12px;align-items:start;gap:32px;transition:border-color .3s;}
-.exp-item:hover{border-color:rgba(255,110,0,.3);}
-.exp-date{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);padding-top:4px;}
-.exp-role{font-family:'Playfair Display',serif;font-style:italic;font-size:20px;color:var(--white);margin-bottom:6px;}
-.exp-co{font-size:10px;letter-spacing:.1em;color:var(--accent);text-transform:uppercase;margin-bottom:10px;}
-.exp-desc{font-size:11.5px;color:var(--muted);line-height:1.9;}
-.exp-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:8px;}
-
-/* TOOLS */
-#tools{background:var(--surface);}
-.tgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}
-.tool{background:var(--bg);border:1px solid var(--border);padding:26px 22px;display:flex;flex-direction:column;gap:8px;transition:border-color .3s,background .3s;cursor:none;}
-.tool:hover{border-color:rgba(255,110,0,.3);background:rgba(255,110,0,.04);}
-.ti{font-size:22px;margin-bottom:4px;}
-.tn{font-size:12px;color:var(--white);}
-.tt{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
-
-/* CONTACT */
-#contact{background:var(--bg);}
-.cwrap{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
-.cbig{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,5.5vw,84px);color:var(--white);line-height:.95;letter-spacing:.03em;margin-bottom:28px;}
-.cbig em{font-family:'Playfair Display',serif;font-style:italic;color:var(--accent);}
-.csub{font-size:12px;color:var(--muted);line-height:2;max-width:360px;margin-bottom:44px;}
-.clinks{display:flex;flex-direction:column;gap:2px;}
-.cl{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;background:var(--surface);border:1px solid var(--border);color:var(--text);text-decoration:none;font-size:11px;letter-spacing:.1em;text-transform:uppercase;transition:border-color .3s,color .3s,background .3s;cursor:none;}
-.cl:hover{border-color:var(--accent);color:var(--accent);background:rgba(255,110,0,.05);}
-.clarr{transition:transform .3s;}
-.cl:hover .clarr{transform:translateX(6px);}
-.cform{display:flex;flex-direction:column;gap:4px;}
-.fg{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
-.fg label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
-.fg input,.fg textarea{background:var(--surface);border:1px solid var(--border);color:var(--white);font-family:'DM Mono',monospace;font-size:12px;padding:14px 16px;outline:none;resize:none;transition:border-color .2s;}
-.fg input:focus,.fg textarea:focus{border-color:var(--accent);}
-.fg textarea{min-height:120px;}
-.fsub{background:var(--accent);color:#000;border:none;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;padding:16px 32px;cursor:pointer;transition:opacity .2s;align-self:flex-start;margin-top:4px;}
-.fsub:hover{opacity:.85;}
-
-footer{padding:26px 60px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
-footer a{color:var(--accent);text-decoration:none;}
-
-.rv{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
-.rv.on{opacity:1;transform:none;}
-
-@media(max-width:960px){
-  nav{padding:20px 24px;}.nav-links,.nav-cta{display:none;}
-  .hero{grid-template-columns:1fr;padding:100px 24px 60px;min-height:auto;}
-  .hero-right{order:-1;}
-  .photo-frame{aspect-ratio:3/2;max-height:260px;}
-  section{padding:72px 24px;}
-  #reel{padding:60px 24px;}
-  .about-grid,.cwrap{grid-template-columns:1fr;gap:48px;}
-  .pgrid{grid-template-columns:1fr;}
-  .proj.feat{grid-column:auto;}.proj.feat .proj-cover{aspect-ratio:16/9;}
-  .tgrid{grid-template-columns:repeat(2,1fr);}
-  .exp-item{grid-template-columns:1fr;gap:10px;}
-  .sh{flex-direction:column;align-items:flex-start;gap:8px;}
-  footer{flex-direction:column;gap:10px;text-align:center;}
-}
-</style>
-</head>
-<body>
-<div class="cur" id="cur"></div>
-<div class="cur-ring" id="curRing"></div>
-
-<nav id="nav">
-  <a href="#" class="logo">R<span>.</span>DHUMAL</a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#reel">Reel</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#tools">Tools</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <a href="https://www.behance.net/rohandhumal1" target="_blank" class="nav-cta">Behance ↗</a>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-left">
-    <div class="hero-tag">Mumbai, India · Open to Projects</div>
-    <h1 class="hero-name">ROHAN<br/><span class="it">Dhumal</span></h1>
-    <p class="hero-role">Senior Motion Designer</p>
-    <p class="hero-bio">Crafting branded motion stories through AI-powered video, After Effects, and commercial production. From concept to final frame — for brands that want to move.</p>
-    <div class="hero-actions">
-      <a href="#projects" class="btn-p">See My Work →</a>
-      <a href="https://www.behance.net/rohandhumal1" target="_blank" class="btn-g">Behance ↗</a>
-    </div>
-  </div>
-  <div class="hero-right">
-    <!-- ADD YOUR PHOTO: remove the comment tags and add your image URL -->
-    <div class="photo-frame">
-      <img src="https://drive.google.com/uc?export=view&id=1_bm850_FbVIhbbO0Z2RG50e1Z6N64iTt" alt="Rohan Dhumal"/>
-      <div class="frame-label">Rohan Dhumal · Mumbai</div>
-    </div>
-    <div class="stats-row">
-      <div class="stat"><div class="stat-n">6<span>+</span></div><div class="stat-l">Years Exp.</div></div>
-      <div class="stat"><div class="stat-n">30<span>+</span></div><div class="stat-l">Projects</div></div>
-      <div class="stat"><div class="stat-n">12<span>+</span></div><div class="stat-l">Brands</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- MARQUEE -->
-<div class="mq-wrap">
-  <div class="mq-track">
-    <span>Motion Design</span><span class="ac">✦</span><span>AI Video Generation</span><span class="ac">✦</span><span>After Effects</span><span class="ac">✦</span><span>Kling · Higgsfield · Runway</span><span class="ac">✦</span><span>Brand Campaigns</span><span class="ac">✦</span><span>Commercial Production</span><span class="ac">✦</span><span>Prompt Engineering</span><span class="ac">✦</span><span>Motion Design</span><span class="ac">✦</span><span>AI Video Generation</span><span class="ac">✦</span><span>After Effects</span><span class="ac">✦</span><span>Kling · Higgsfield · Runway</span><span class="ac">✦</span><span>Brand Campaigns</span><span class="ac">✦</span><span>Commercial Production</span><span class="ac">✦</span><span>Prompt Engineering</span><span class="ac">✦</span>
+<!-- VIDEO MODAL -->
+<div class="vid-overlay" id="vidOverlay" onclick="closeVideo(event)">
+  <div class="vid-box">
+    <button class="vid-close" onclick="closeVideo()">✕ Close</button>
+    <iframe id="vidFrame" src="" allowfullscreen allow="autoplay"></iframe>
   </div>
 </div>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="sh rv"><div><div class="st">Who I Am</div><h2 class="stitle">The Story</h2></div><div class="snum">01</div></div>
-  <div class="about-grid">
-    <div>
-      <div class="about-text rv">
-        <p>I'm a <strong>Senior Motion Designer at Foxymoron</strong>, one of India's leading digital agencies. With 6+ years of experience, I bridge traditional post-production with cutting-edge AI video generation.</p>
-        <p>My work spans branded commercial content for some of India's biggest consumer brands — including <strong>Puma, Pond's, Mentos, Onitsuka Tiger, TVS, Converse India,</strong> and luxury labels like IRTH.</p>
-        <p>I specialise in translating brand language into precise motion — whether that's a <strong>360° sneaker reveal, a liquid product morph, or a full AI-generated campaign</strong> built frame by frame.</p>
-        <p>→ <a href="https://www.behance.net/rohandhumal1" target="_blank">View full work on Behance ↗</a></p>
-      </div>
-      <div class="skills-wrap rv">
-        <div class="skrow"><div class="skname">After Effects</div><div class="skbar"><div class="skfill" style="width:95%"></div></div><div class="skval">95</div></div>
-        <div class="skrow"><div class="skname">AI Video Gen</div><div class="skbar"><div class="skfill" style="width:93%"></div></div><div class="skval">93</div></div>
-        <div class="skrow"><div class="skname">Prompt Design</div><div class="skbar"><div class="skfill" style="width:92%"></div></div><div class="skval">92</div></div>
-        <div class="skrow"><div class="skname">Premiere Pro</div><div class="skbar"><div class="skfill" style="width:90%"></div></div><div class="skval">90</div></div>
-        <div class="skrow"><div class="skname">Photoshop</div><div class="skbar"><div class="skfill" style="width:88%"></div></div><div class="skval">88</div></div>
-        <div class="skrow"><div class="skname">Compositing</div><div class="skbar"><div class="skfill" style="width:85%"></div></div><div class="skval">85</div></div>
-      </div>
-    </div>
-    <!-- ADD CASUAL PHOTO: remove comment and add your URL -->
-    <div class="about-photo rv">
-      <img src="rohanjpg.jpg" alt="Rohan Dhumal"/>
-    </div>
-  </div>
-</section>
-
-<!-- SHOWREEL -->
-<section id="reel">
-  <div class="reel-tag rv">Motion Reel</div>
-  <h2 class="reel-title rv">Watch the <em>Reel</em></h2>
-  <!-- ADD VIDEO: replace comment with your YouTube embed -->
-  <div class="video-zone rv">
-    <iframe src="https://player.vimeo.com/video/1125301109" allowfullscreen></iframe>
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="sh rv"><div><div class="st">Selected Work</div><h2 class="stitle">Projects</h2></div><div class="snum">02</div></div>
-  <div class="pgrid">
-
-    <div class="proj feat rv">
-      <div class="proj-cover">
-        <!--<img src="YOUR_IRTH_IMAGE" alt="IRTH"/>-->
-        <div class="cph"><img src="irth.jpg" alt="IRTH"/>
-      </div>
-      <div class="proj-body">
-        <div class="pcat">Luxury Retail · Featured</div>
-        <div class="ptitle">IRTH Handbag Campaign</div>
-        <p class="pdesc">Sketch-to-reality store reveal animation, Mumbai coastal billboard drone sequence, and Instagram carousel swipe mechanics — built entirely through AI video compositing.</p>
-        <div class="ptags"><span class="ptag">Kling</span><span class="ptag">After Effects</span><span class="ptag">Higgsfield</span><span class="ptag">AI Compositing</span></div>
-      </div>
-      <div class="parr">→</div>
-    </div>
-
-    <div class="proj rv">
-      <div class="proj-cover"><img src="mentos.jpg" alt="Mentos"/></div>
-      <div class="proj-body">
-        <div class="pcat">FMCG · Confectionery</div>
-        <div class="ptitle">Mentos Pure Fresh</div>
-        <p class="pdesc">Condensation product VFX and animated airplane cabin scene capturing the freshness burst concept for the brand campaign.</p>
-        <div class="ptags"><span class="ptag">Hailuo</span><span class="ptag">Premiere Pro</span><span class="ptag">VFX</span></div>
-      </div>
-      <div class="parr">→</div>
-    </div>
-
-    <div class="proj rv">
-      <div class="proj-cover"><img src="sandisk.jpg.jpg" alt="Sandisk"/></div>
-      <div class="proj-body">
-        <div class="pcat">Tech · Storage ⭐ 93.7M Views</div>
-        <div class="ptitle">Sandisk Extreme Fit™</div>
-        <p class="pdesc">Introducing the SanDisk® Extreme Fit™ USB-C® Flash Drive — up to 1TB capacity, USB 3.2 Gen 1 speeds up to 400MB/s in a compact plug-and-stay design. Most watched — 93.7 Million views.</p>
-        <div class="ptags"><span class="ptag">Kling</span><span class="ptag">After Effects</span><span class="ptag">Product VFX</span></div>
-      </div>
-      <div class="parr">→</div>
-    </div>
-
-    <div class="proj rv">
-      <div class="proj-cover"><img src="Cred 1.jpg" alt="CRED"/></div>
-      <div class="proj-body">
-        <div class="pcat">Fintech · App</div>
-        <div class="ptitle">CRED — Secure by Design</div>
-        <p class="pdesc">Premium product visualisation for CRED — showcasing Google HCE Guard DexGuard security with a cinematic phone-on-pedestal reveal and teal atmospheric lighting.</p>
-        <div class="ptags"><span class="ptag">After Effects</span><span class="ptag">3D Compositing</span><span class="ptag">Product VFX</span></div>
-      </div>
-      <div class="parr">→</div>
-    </div>
-
-    <div class="proj rv">
-      <div class="proj-cover"><img src="tvs.jpg" alt="TVS"/></div>
-      <div class="proj-body">
-        <div class="pcat">Automotive</div>
-        <div class="ptitle">TVS iQube Scooter</div>
-        <p class="pdesc">Cinematic day-to-night transition ad — racetrack golden hour scenes and spotlight sequences for the electric scooter launch.</p>
-        <div class="ptags"><span class="ptag">Higgsfield</span><span class="ptag">After Effects</span><span class="ptag">Sky FX</span></div>
-      </div>
-      <div class="parr">→</div>
-    </div>
-
-    <div class="proj rv">
-      <div class="proj-cover"><img src="ponds.jpg" alt="Ponds"/></div>
-      <div class="proj-body">
-        <div class="pcat">Beauty · Skincare</div>
-        <div class="ptitle">Pond's Hydra Miracle</div>
-        <p class="pdesc">Morphing jar animation with dynamic liquid transformation effects — showcasing the product's hydration technology through fluid motion design.</p>
-        <div class="ptags"><span class="ptag">Kling</span><span class="ptag">After Effects</span><span class="ptag">Product VFX</span></div>
-      </div>
-      <div class="parr">→</div>
-    </div>
-
-    <div class="proj rv">
-      <div class="proj-cover"><img src="Cred 2.png" alt="CRED 2"/></div>
-      <div class="proj-body">
-        <div class="pcat">Fintech · Space Edition</div>
-        <div class="ptitle">CRED — Design to Secure</div>
-        <p class="pdesc">A cosmic take on CRED's secure payment experience — floating spheres, starfield backdrop, and a dramatic green horizon elevating the brand's premium identity.</p>
-        <div class="ptags"><span class="ptag">After Effects</span><span class="ptag">Motion Design</span><span class="ptag">3D Elements</span></div>
-      </div>
-      <div class="parr">→</div>
-    </div>
-
-    <div class="proj rv">
-      <div class="proj-cover"><img src="Bajaj.jpg" alt="Bajaj"/></div>
-      <div class="proj-body">
-        <div class="pcat">Consumer Electronics</div>
-        <div class="ptitle">Bajaj — Glides Like a Race Machine</div>
-        <p class="pdesc">Motion design for Bajaj's Non-Stick Soleplate iron — cinematic lighting and bold typography. Pure manual After Effects craftsmanship, no AI.</p>
-        <div class="ptags"><span class="ptag">After Effects</span><span class="ptag">Motion Design</span><span class="ptag">Manual</span></div>
-      </div>
-      <div class="parr">→</div>
-    </div>
-
-    <div class="proj rv">
-      <div class="proj-cover"><img src="Irth 2 .jpg" alt="IRTH 2"/></div>
-      <div class="proj-body">
-        <div class="pcat">Luxury Retail · Campaign 2</div>
-        <div class="ptitle">IRTH — Chapter Two</div>
-        <p class="pdesc">Second campaign for IRTH — continuation of the luxury handbag brand story with new motion concepts and AI-powered visual storytelling.</p>
-        <div class="ptags"><span class="ptag">Kling</span><span class="ptag">After Effects</span><span class="ptag">AI Video</span></div>
-      </div>
-      <div class="parr">→</div>
-    </div>
-
-  </div>
-</section>
-
-<!-- EXPERIENCE -->
-<section id="experience">
-  <div class="sh rv"><div><div class="st">Work History</div><h2 class="stitle">Experience</h2></div><div class="snum">03</div></div>
-  <div class="exp-list">
-    <div class="exp-item rv">
-      <div class="exp-date">2022 — Present</div>
-      <div><div class="exp-role">Senior Motion Designer</div><div class="exp-co">Foxymoron · Mumbai</div><p class="exp-desc">Leading AI video production and motion graphics for major Indian consumer brands. Specialising in Kling, Higgsfield, Runway, and After Effects for commercial campaigns across FMCG, luxury, automotive, and sportswear.</p></div>
-      <div class="exp-dot"></div>
-    </div>
-    <div class="exp-item rv">
-      <div class="exp-date">2020 — 2022</div>
-      <div><div class="exp-role">Motion Designer</div><div class="exp-co">Freelance · Mumbai</div><p class="exp-desc">Independent motion design work including branded content for Converse India, social media campaigns, and short-form video production for digital-first brands.</p></div>
-      <div class="exp-dot"></div>
-    </div>
-    <div class="exp-item rv">
-      <div class="exp-date">2018 — 2020</div>
-      <div><div class="exp-role">Junior Motion Designer</div><div class="exp-co">Agency · Mumbai</div><p class="exp-desc">Started career building motion graphics, explainer videos, and social content. Developed core After Effects and Premiere Pro skills across diverse client projects.</p></div>
-      <div class="exp-dot"></div>
-    </div>
-  </div>
-</section>
-
-<!-- TOOLS -->
-<section id="tools">
-  <div class="sh rv"><div><div class="st">Software & Platforms</div><h2 class="stitle">The Stack</h2></div><div class="snum">04</div></div>
-  <div class="tgrid rv">
-    <div class="tool"><div class="ti">🎬</div><div class="tn">After Effects</div><div class="tt">Motion & VFX</div></div>
-    <div class="tool"><div class="ti">🎞</div><div class="tn">Premiere Pro</div><div class="tt">Editing & Colour</div></div>
-    <div class="tool"><div class="ti">🖼</div><div class="tn">Photoshop</div><div class="tt">Compositing</div></div>
-    <div class="tool"><div class="ti">🤖</div><div class="tn">Kling AI</div><div class="tt">AI Video Gen</div></div>
-    <div class="tool"><div class="ti">⚡</div><div class="tn">Higgsfield</div><div class="tt">AI Video Gen</div></div>
-    <div class="tool"><div class="ti">🌊</div><div class="tn">Runway</div><div class="tt">AI Video Gen</div></div>
-    <div class="tool"><div class="ti">🌀</div><div class="tn">Hailuo / Minimax</div><div class="tt">AI Video Gen</div></div>
-    <div class="tool"><div class="ti">✦</div><div class="tn">Veo 3</div><div class="tt">AI Video Gen</div></div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="sh rv"><div><div class="st">Get In Touch</div><h2 class="stitle">Let's Work Together</h2></div><div class="snum">05</div></div>
-  <div class="cwrap">
-    <div class="rv">
-      <h2 class="cbig">LET'S MAKE<br/><em>Something</em><br/>GREAT.</h2>
-      <p class="csub">Open to freelance projects, brand campaigns, and collaborations. Based in Mumbai — working with brands worldwide.</p>
-      <div class="clinks">
-        <a href="https://www.behance.net/rohandhumal1" target="_blank" class="cl"><span>Behance Portfolio</span><span class="clarr">→</span></a>
-        <a href="#" class="cl"><span>Email — Coming Soon</span><span class="clarr">→</span></a>
-        <a href="#" class="cl"><span>Instagram — Coming Soon</span><span class="clarr">→</span></a>
-        <a href="#" class="cl"><span>LinkedIn — Coming Soon</span><span class="clarr">→</span></a>
-      </div>
-    </div>
-    <div class="rv">
-      <div class="cform">
-        <div class="fg"><label>Your Name</label><input type="text" placeholder="John Doe"/></div>
-        <div class="fg"><label>Email Address</label><input type="email" placeholder="john@company.com"/></div>
-        <div class="fg"><label>Project Brief</label><textarea placeholder="Tell me about your project..."></textarea></div>
-        <button class="fsub" onclick="handleForm()">Send Message →</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <span>© 2026 Rohan Dhumal · Senior Motion Designer · Mumbai</span>
-  <span><a href="https://www.behance.net/rohandhumal1" target="_blank">Behance ↗</a></span>
-</footer>
-
+<!-- VIMEO THUMBNAIL FETCHER -->
 <script>
-const cur=document.getElementById('cur'),ring=document.getElementById('curRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
-document.querySelectorAll('a,button,.proj,.tool,.stat,.cl').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{ring.style.width='50px';ring.style.height='50px';ring.style.borderColor='rgba(255,110,0,.8)';});
-  el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(255,110,0,.5)';});
+document.querySelectorAll('img[data-vimeo]').forEach(img => {
+  const id = img.getAttribute('data-vimeo');
+  fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}&width=1280`)
+    .then(r => r.json())
+    .then(data => {
+      // Get highest quality: replace default size with _1280 or largest available
+      let thumb = data.thumbnail_url || '';
+      thumb = thumb.replace(/_\d+x\d+/, '_1280');
+      img.src = thumb;
+      img.style.objectFit = 'cover';
+    })
+    .catch(() => {
+      // fallback to vumbnail if API fails
+      img.src = `https://vumbnail.com/${id}.jpg`;
+    });
 });
-window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('up',scrollY>60));
-const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),i*80);obs.unobserve(e.target);}});},{threshold:.08});
-document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
-const sObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.skbar').forEach(b=>b.classList.add('go'));sObs.unobserve(e.target);}});},{threshold:.3});
-document.querySelectorAll('.skills-wrap').forEach(el=>sObs.observe(el));
-function handleForm(){const n=document.querySelector('input[type=text]').value;if(n.trim()){alert('Thanks '+n+'! I\'ll be in touch soon.');}else{alert('Please enter your name.');}}
 </script>
 </body>
 </html>
